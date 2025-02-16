@@ -3,6 +3,7 @@ package com.mazzillio.scheduler_notification_api.business;
 import com.mazzillio.scheduler_notification_api.business.mapper.IScheduleMapper;
 import com.mazzillio.scheduler_notification_api.controller.dtos.in.ScheduleRecord;
 import com.mazzillio.scheduler_notification_api.controller.dtos.out.ScheduleRecordOut;
+import com.mazzillio.scheduler_notification_api.infrastructure.exceptions.NotFoundException;
 import com.mazzillio.scheduler_notification_api.infrastructure.repositories.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,13 @@ public class ScheduleService {
 
     public ScheduleRecordOut saveSchedule(ScheduleRecord schedule) {
         return iScheduleMapper.toOut(repository.save(iScheduleMapper.toEntity(schedule)));
+    }
+
+    public ScheduleRecordOut getSchedule(Long id) {
+        return iScheduleMapper.toOut(
+                repository.findById(id)
+                        .orElseThrow(()->new NotFoundException("Id not dounf"))
+        );
     }
 
 }
